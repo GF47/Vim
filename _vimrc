@@ -34,7 +34,7 @@ set et
 set ambiwidth=double
 
 "Format related
-set tw=78
+"set textwidth=78
 set lbr
 set fo+=mB
 
@@ -85,10 +85,10 @@ else
 endif
 syntax on
 
-"Color in vim
+" Color in vim
 hi Folded term=standout ctermfg=darkcyan ctermbg=NONE guifg=Black guibg=#e3c1a5
 
-"Platform dependent settings
+" Platform dependent settings
 if(has("win32"))
 	if(has("gui_running"))
 		set guifont=Consolas:h12:cANSI
@@ -99,24 +99,36 @@ else
 	endif
 endif
 
-"powerline
+" 文件头
+function AddTitle()
+    call append(0,"/***************************************************************")
+    call append(1," *@File Name     : ".expand("%:t"))
+    call append(2," *@Author        : GF47")
+    call append(3," *@Description   : TODO what's the use of ".expand("%:t"))
+    call append(4," *@Data          : ".strftime("%Y-%m-%d %H:%M"))
+    call append(5," *@Edit          : none")
+    call append(6," **************************************************************/")
+endfunction
+
+nmap <leader>c :call AddTitle()<cr> 's
+
+"--------------------------------------------------------------"
+" 插件配置
+"--------------------------------------------------------------"
+
+" PowerLine
 set laststatus=2
 set t_Co=256
 let g:PowerLine_symbols='fancy'
 set encoding=utf8
 
-
-"TagList & NERDTree
+" TagList & NERDTree
 let Tlist_Ctags_Cmd = '"D:\Program Files (x86)\ctags58\ctags.exe"'
 let Tlist_Show_One_File = 1
 let Tlist_Exit_OnlyWindow = 1
 let Tlist_File_Fold_Auto_Close = 1
 let Tlist_Show_Menu = 1
 let g:NERDTree_title = 'NERDTree'
-
-"winManager
-let g:winManagerWindowLayout = "NERDTree|TagList"
-let g:winManagerWidth = 30
 
 function! NERDTree_Start()
     exe 'NERDTree'
@@ -125,6 +137,10 @@ endfunction
 function! NERDTree_IsValid()
     return 1
 endfunction
+
+" WinManager
+let g:winManagerWindowLayout = "NERDTree|TagList"
+let g:winManagerWidth = 30
 
 function! WinManagerToggle()
     if !IsWinManagerVisible()
@@ -136,6 +152,8 @@ function! WinManagerToggle()
 endfunction
  
 nmap <leader>w :call WinManagerToggle()<cr>
+
+" EasyAlign
 
 vmap <leader>a <Plug>(EasyAlign)
 nmap <leader>a <Plug>(EasyAlign)
