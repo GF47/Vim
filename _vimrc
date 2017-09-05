@@ -12,15 +12,15 @@ set columns=118
 set linespace=8
 
 " 禁止光标闪烁
-set gcr=a:block-blinkon0
+" set gcr=a:block-blinkon0
 
 if has("gui_running")
     " 禁止显示滚动条
     set guioptions-=l
     set guioptions-=L
-    set guioptions-=r
-    set guioptions-=R
-    " set guioptions-=b
+    " set guioptions-=r
+    " set guioptions-=R
+    set guioptions-=b
     " 禁止显示菜单和工具条
     " set guioptions-=m
     set guioptions-=T
@@ -60,9 +60,15 @@ set wildmenu
 "set spell
 
 "Encoding related
-set encoding=utf-8
+set encoding=utf-8 " vim内部所有的buffer、寄存器和脚本中的字符串等，都是用这个编码
+set termencoding=cp936 " 用于终端的编码，当使用termenal和cmd的时候，屏幕显示使用这个编码
+" set fileencoding=utf-8 " 磁盘文件加载探测和保存的编码
+" set fileencodings=ucs-bom,utf-8,chinese,cp936 " 依次检测编码类型
 set langmenu=zh_CN.UTF-8
-language message zh_CN.UTF-8
+language message zh_CN.UTF-8 " vim 提示信息乱码
+
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
 
 "File type related
 filetype plugin indent on
@@ -76,7 +82,6 @@ set sm
 " 开启高亮显示搜索结果
 set hls
 if(has("gui_running"))
-	set guioptions+=b
 	colo torte
 	set nowrap
 else
@@ -110,7 +115,14 @@ function AddTitle()
     call append(6," **************************************************************/")
 endfunction
 
-nmap <leader>c :call AddTitle()<cr> 's
+nmap <leader><leader>c :call AddTitle()<cr> 's
+
+" _<=>CamelCase
+
+" 单词首字母大写
+vnoremap <leader><leader>U :s/\w*/\u&/g<cr> :nohl<cr>
+" 空格转为下划线
+vnoremap <leader><leader>_ :s/\s\{1,}/_/g<cr> :nohl<cr>
 
 "--------------------------------------------------------------"
 " 插件配置
@@ -120,7 +132,7 @@ nmap <leader>c :call AddTitle()<cr> 's
 set laststatus=2
 set t_Co=256
 let g:PowerLine_symbols='fancy'
-set encoding=utf8
+set encoding=utf-8
 
 " TagList & NERDTree
 let Tlist_Ctags_Cmd = '"D:\Program Files (x86)\ctags58\ctags.exe"'
@@ -163,6 +175,20 @@ endif
 let g:easy_align_delimiters['#'] = {'pattern': '#', 'ignore_groups': ['String']}
 
 " AutoPairs
-if !exists('g:AutoPairs')
-  let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>'}
-end
+" if !exists('g:AutoPairs')
+"   let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>'}
+" end
+
+" vim-markdown
+set nofoldenable " 开启或关闭vim标准的折叠 foldenable
+" let g:vim_markdown_folding_disable = 1 " 关闭markdown自身的折叠设置
+let g:vim_markdown_folding_style_pythonic = 1 " python风格的折叠
+let g:vim_markdown_override_foldtext = 0
+let g:vim_markdown_folding_level = 6
+let g:vim_markdown_toc_autofit = 1 "自动适配目录
+set conceallevel=2 " 设置表现形式
+let g:vim_markdown_conceal = 0
+let g:tex_conceal = ""
+let g:vim_markdown_math = 1
+
+let g:vim_markdown_fenced_languages = ['csharp=cs']
